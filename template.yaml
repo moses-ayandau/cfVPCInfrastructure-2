@@ -333,6 +333,7 @@ Resources:
               - sts:AssumeRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/AmazonSSMFullAccess
   
   # CodeDeploy role for blue-green deployments
   CodeDeployServiceRole:
