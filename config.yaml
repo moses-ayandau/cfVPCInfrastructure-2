@@ -1,4 +1,3 @@
 template-file-path: template.yaml
-parameters:
-  DBPassword: Mos21311
+parameters: {}
 tags: {}
