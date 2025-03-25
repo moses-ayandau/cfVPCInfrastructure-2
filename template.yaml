@@ -50,6 +50,7 @@ Parameters:
   DBPassword:
     Description: Password for the RDS PostgreSQL database
     Type: String
+    Default: secret1234
     NoEcho: true
 
   DBName:
