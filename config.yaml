@@ -1,3 +1,4 @@
 template-file-path: template.yaml
-parameters: {}
+parameters:
+  DBPassword: secret1234
 tags: {}
