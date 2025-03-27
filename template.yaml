@@ -79,7 +79,7 @@ Resources:
     Properties:
       Name: /snapshare/db/name
       Type: String
-      Value: postgres
+      Value: snapsharedb
       Description: "RDS PostgreSQL database name for Snapshare application"
 
   DBUsernameParameter:
@@ -102,7 +102,7 @@ Resources:
     Properties:
       Name: /snapshare/db/url
       Type: String
-      Value: !Sub 'jdbc:postgresql://${PostgreSQLDB.Endpoint.Address}:${PostgreSQLDB.Endpoint.Port}/${DBName}'
+      Value: !Sub 'jdbc:postgresql://${SnapshareDB.Endpoint.Address}:${SnapshareDB.Endpoint.Port}/${DBName}'
       Description: "RDS PostgreSQL URL for Snapshare application"
 
 
@@ -366,7 +366,6 @@ Resources:
     Properties:
       LogGroupName: snapshare-log-group
   
-  # ECS Task Definition 
   ECSTaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
@@ -377,15 +376,6 @@ Resources:
       Memory: '4096'
       NetworkMode: awsvpc
       ExecutionRoleArn: !GetAtt TaskExecutionRole.Arn
-      Envrionment:
-        - Name: DB_NAME
-          Value: !Sub DBName
-        - Name: DB_USERNAME
-          Value: !Ref DBUsername
-        - Name: DB_PASSWORD
-          Value: !Ref DBPassword
-        - Name: DB_URL
-          Value:  !Sub 'jdbc:postgresql://${PostgreSQLDB.Endpoint.Address}:${PostgreSQLDB.Endpoint.Port}/${DBName}'
       TaskRoleArn: !GetAtt S3AccessRole.Arn
       ContainerDefinitions:
         - Name: snapshare-container
@@ -399,6 +389,16 @@ Resources:
               awslogs-group: snapshare-log-group
               awslogs-region: !Ref AWS::Region
               awslogs-stream-prefix: ecs
+          Environment:  
+            - Name: DB_NAME
+              Value: !Sub DBName
+            - Name: DB_USERNAME
+              Value: !Ref DBUsername
+            - Name: DB_PASSWORD
+              Value: !Ref DBPassword
+            - Name: DB_URL
+              Value: !Sub 'jdbc:postgresql://${SnapshareDB.Endpoint.Address}:${SnapshareDB.Endpoint.Port}/${DBName}'
+
   
   LoadBalancerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
